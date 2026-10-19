@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>One of Us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Henny+Penny&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --red:#F45858;--peach:#FFE5D1;--yellow:#FFD166;--green:#8DD982;--blue:#67C9F5;--purple:#B8A5F5;
+  --ink:#1B2347;--space:#0E1330;--panel:#171E45;--text:#FFF3EA;--muted:#B9BFE0;
+  --head:'Jokerman','Henny Penny','Segoe Print',cursive;--body:'Inter',system-ui,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--space);color:var(--text);font:400 17px/1.6 var(--body);font-synthesis:none;overflow-x:hidden}
+h1,h2,h3{font-family:var(--head);font-weight:400;line-height:1.2;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+section{padding:96px 0}
+h2{font-size:clamp(30px,4vw,50px);margin-bottom:18px;max-width:18ch}
+.lede{color:var(--muted);max-width:56ch;margin:0 0 44px}
+
+/* starfield */
+#stars{position:fixed;inset:0;z-index:-1;width:100%;height:100%;display:block;background:var(--space)}
+.ic{width:1.1em;height:1.1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.17em;flex:none}
+.card .ic{width:38px;height:38px;display:block;margin-bottom:12px}
+.card:nth-child(1) .ic{color:var(--blue)}.card:nth-child(2) .ic{color:var(--green)}.card:nth-child(3) .ic{color:var(--purple)}
+.facts .ic{color:var(--yellow);margin-right:4px}
+.btn .ic{margin-right:8px}
+#ring{position:absolute;inset:0}
+#pxw{position:fixed;inset:0;z-index:62;pointer-events:none;opacity:0}
+#pxw.on{opacity:1;animation:pxb 1.3s linear}
+#pxc{width:100%;height:100%;display:block;filter:blur(1.5px)}
+@keyframes pxb{0%,100%{backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0)}45%,55%{backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}}
+#warp{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:0}
+#warp.on{animation:warp 1.2s ease-in-out}
+@keyframes warp{0%{opacity:0;backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);background:rgba(14,19,48,0)}40%,60%{opacity:1;backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);background:rgba(14,19,48,.55)}100%{opacity:0;backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);background:rgba(14,19,48,0)}}
+#ticket{position:fixed;inset:0;z-index:55;display:none;place-items:center;background:rgba(8,10,28,.7);padding:24px}
+#ticket.show{display:grid;animation:unblur .7s ease-out}
+@keyframes unblur{from{filter:blur(18px);opacity:0}to{filter:blur(0);opacity:1}}
+.pass{position:relative;background:var(--peach);color:var(--ink);border:4px solid var(--ink);border-radius:24px;width:min(560px,100%);padding:30px 34px;box-shadow:0 10px 0 var(--red)}
+.pass h3{font-size:44px;margin:4px 0 18px}
+.ph{margin:0;font:400 18px var(--head);color:#c63a44;display:flex;align-items:center;gap:8px}
+.pass dl{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0;padding-bottom:20px;border-bottom:3px dashed var(--ink)}
+.pass dt{font-size:13px;font-weight:600;opacity:.7}
+.pass dd{margin:0;font:400 22px var(--head)}
+.bar{height:48px;margin:18px 0 8px;background:repeating-linear-gradient(90deg,var(--ink) 0 3px,transparent 3px 6px,var(--ink) 6px 7px,transparent 7px 12px)}
+.fine{margin:0;font-size:14px}
+#tx{position:absolute;top:12px;right:14px;width:40px;height:40px;border-radius:50%;border:3px solid var(--ink);background:#fff;font:700 22px var(--body);cursor:pointer;color:var(--ink)}
+@keyframes tw{50%{opacity:.1}}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(14,19,48,.85);backdrop-filter:blur(10px);border-bottom:2px solid var(--panel)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+nav b{font:700 18px var(--head);display:flex;align-items:center;gap:10px}
+nav b svg{width:24px;height:28px;color:var(--red)}
+nav ul{display:flex;gap:26px;list-style:none;margin:0;padding:0;font-weight:500;font-size:15px}
+nav ul a{text-decoration:none;color:var(--muted)}nav ul a:hover{color:var(--text)}
+.btn{display:inline-block;font:700 16px var(--head);background:var(--red);color:#fff;border:3px solid var(--ink);border-radius:14px;padding:12px 22px;text-decoration:none;cursor:pointer;box-shadow:0 5px 0 #9c2f3a;transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #9c2f3a}
+.btn:active{transform:translateY(5px);box-shadow:0 0 0 #9c2f3a}
+.btn.alt{background:var(--yellow);color:var(--ink);box-shadow:0 5px 0 #b48a1f}
+.btn.alt:hover{box-shadow:0 3px 0 #b48a1f}
+
+/* hero */
+.hero{min-height:calc(100vh - 60px);display:flex;align-items:center;padding:56px 0 80px;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+.tag{display:inline-block;background:var(--panel);border:2px solid var(--purple);color:var(--purple);border-radius:99px;padding:4px 16px;font-weight:600;font-size:14px;margin-bottom:22px}
+h1{font-size:clamp(40px,6vw,78px);line-height:1.15;letter-spacing:0}
+h1 em{font-style:normal;color:var(--red)}
+.hero p{color:var(--muted);font-size:20px;max-width:46ch;margin:22px 0 30px}
+.facts{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px}
+.facts span{background:var(--panel);border-radius:12px;padding:8px 14px;font-weight:600;font-size:15px}
+.facts b{color:var(--yellow)}
+.cta{display:flex;gap:16px;flex-wrap:wrap}
+
+/* emergency button */
+.table{position:relative;aspect-ratio:1;max-width:440px;margin:0 auto;width:100%}
+.disc{position:absolute;inset:8% 4% 8%;border-radius:50%;background:radial-gradient(circle at 50% 35%,#3b4688,#1f2757);border:6px solid var(--ink);box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.pad{position:absolute;left:50%;top:50%;width:46%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:repeating-linear-gradient(45deg,var(--yellow) 0 12px,var(--ink) 12px 24px);border:4px solid var(--ink);display:grid;place-items:center}
+#bigred{width:74%;aspect-ratio:1;border-radius:50%;border:4px solid var(--ink);background:radial-gradient(circle at 40% 30%,#ff8a8a,var(--red) 55%,#c63a44);box-shadow:0 8px 0 #8a2230;cursor:pointer;color:#fff;font:700 15px var(--head);transition:transform .1s,box-shadow .1s;animation:pulse 2s infinite}
+#bigred:active,#bigred.hit{transform:translateY(7px);box-shadow:0 1px 0 #8a2230}
+@keyframes pulse{50%{box-shadow:0 8px 0 #8a2230,0 0 0 14px rgba(244,88,88,.25)}}
+.seat{position:absolute;width:16%;animation:bob 3.5s ease-in-out infinite}
+.seat svg{width:100%;display:block}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.hint{text-align:center;color:var(--muted);font-size:14px;margin-top:6px}
+
+/* about */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{background:var(--panel);border-radius:22px;padding:30px;border:3px solid var(--ink)}
+.card:nth-child(1){border-top:8px solid var(--blue)}.card:nth-child(2){border-top:8px solid var(--green)}.card:nth-child(3){border-top:8px solid var(--purple)}
+.card h3{font-size:26px;margin-bottom:10px}
+.card p{margin:0;color:var(--muted)}
+
+/* schedule */
+.sched{list-style:none;margin:0;padding:0 0 0 34px;border-left:4px dashed var(--panel);max-width:760px}
+.sched li{position:relative;padding:0 0 34px 28px}
+.sched li::before{content:"";position:absolute;left:-46px;top:2px;width:24px;height:24px;border-radius:50%;background:var(--c,var(--red));border:4px solid var(--space)}
+.sched time{font:700 20px var(--head);color:var(--c,var(--red))}
+.sched h3{font-size:24px;margin:4px 0}
+.sched p{margin:0;color:var(--muted)}
+
+/* roles */
+.roles{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.role{text-align:center;background:var(--panel);border-radius:22px;padding:24px 18px 28px;cursor:pointer;border:3px solid transparent;transition:border-color .2s}
+.role:hover,.role.on{border-color:var(--c)}
+.role svg{width:64px;color:var(--c);transition:transform .25s}
+.role:hover svg,.role.on svg{transform:rotate(-8deg) scale(1.1)}
+.role h3{font-size:22px;margin:8px 0 6px}
+.role p{margin:0;font-size:15px;color:var(--muted)}
+#roleNote{margin-top:24px;min-height:52px;font-size:19px;color:var(--yellow);font-weight:500}
+
+/* register */
+.reg{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+form{background:var(--peach);color:var(--ink);border-radius:26px;padding:34px;border:4px solid var(--ink);box-shadow:0 10px 0 var(--red)}
+label{display:block;font-weight:600;margin:0 0 6px}
+input[type=text],input[type=email],select{width:100%;font:500 17px var(--body);padding:12px 14px;border-radius:12px;border:3px solid var(--ink);background:#fff;color:var(--ink);margin-bottom:18px}
+.colors{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.colors input{position:absolute;opacity:0}
+.colors label{width:40px;height:40px;border-radius:50%;background:var(--c);border:3px solid var(--ink);cursor:pointer;margin:0;transition:transform .15s}
+.colors input:checked+label{transform:scale(1.2);box-shadow:0 0 0 4px var(--yellow),0 0 0 7px var(--ink)}
+.colors input:focus-visible+label{outline:3px solid var(--ink);outline-offset:4px}
+form .btn{width:100%;font-size:19px;border-radius:16px}
+.err{color:#b3202e;font-weight:600;min-height:24px;margin:-8px 0 10px;font-size:15px}
+.done{display:none;text-align:center}
+.done svg{width:90px;color:var(--c,var(--red))}
+.done h3{font-size:30px;margin:10px 0}
+.done p{margin:0 0 6px}
+.ejected{animation:eject 1.4s ease-in forwards}
+@keyframes eject{to{transform:translate(260px,-120px) rotate(720deg) scale(.1);opacity:0}}
+.ticket{margin-top:20px;font-size:15px;color:var(--muted)}
+footer{padding:40px 0 60px;color:var(--muted);font-size:14px;border-top:2px solid var(--panel)}
+
+#mus,#syn{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:30;background:var(--yellow);color:var(--ink);font:400 16px var(--head);border:3px solid var(--ink);border-radius:99px;padding:10px 18px;cursor:pointer;box-shadow:0 4px 0 #b48a1f}
+/* meeting overlay */
+#meet{position:fixed;inset:0;z-index:50;display:none;place-items:center;background:rgba(244,88,88,.94);text-align:center;padding:24px}
+#meet.show{display:grid;animation:flash .5s steps(2) 3}
+#meet h2{max-width:none;font-size:clamp(40px,8vw,110px);color:#fff;text-shadow:0 6px 0 var(--ink);margin:0}
+#meet p{font:700 24px var(--head);color:var(--ink);margin:12px 0 0}
+@keyframes flash{50%{background:rgba(120,20,40,.97)}}
+.shake{animation:shake .5s}
+@keyframes shake{20%{transform:translate(-8px,4px)}40%{transform:translate(8px,-4px)}60%{transform:translate(-6px,-3px)}80%{transform:translate(6px,3px)}}
+
+@media (max-width:900px){
+  nav ul{display:none}
+  .hero .wrap,.reg{grid-template-columns:1fr}
+  .grid3,.roles{grid-template-columns:1fr 1fr}
+  section{padding:68px 0}
+}
+@media (max-width:560px){.grid3,.roles{grid-template-columns:1fr}.wrap{padding:0 20px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><linearGradient id="shd" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".32"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient><linearGradient id="vz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8f8ff"/><stop offset=".45" stop-color="#8fd3f2"/><stop offset="1" stop-color="#2f78a8"/></linearGradient></defs>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0116 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></symbol>
+  <symbol id="i-task" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2M9 14l2 2 4-4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></symbol>
+  <symbol id="i-mega" viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 001 1h2l5 4V6L6 10H4a1 1 0 00-1 1zM15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13"/></symbol>
+  <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.2 2.2 0 00-2.9-.1zM12 15l-3-3a22 22 0 012-3.95A12.9 12.9 0 0122 2c0 2.7-.8 7.5-6 11a22.4 22.4 0 01-4 2zM9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M2 9a3 3 0 010 6v2a2 2 0 002 2h16a2 2 0 002-2v-2a3 3 0 010-6V7a2 2 0 00-2-2H4a2 2 0 00-2 2zM13 5v2M13 17v2M13 11v2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+  <symbol id="cm" viewBox="0 0 100 120"><ellipse cx="50" cy="112" rx="34" ry="5" fill="#000" opacity=".3"/>
+    <rect x="6" y="42" width="26" height="46" rx="11" fill="currentColor" stroke="#1B2347" stroke-width="4"/><rect x="6" y="42" width="26" height="46" rx="11" fill="url(#shd)"/>
+    <path d="M26 38Q26 8 52 8T80 38V94Q80 102 72 102H62Q56 102 56 96V84H50V96Q50 102 44 102H34Q26 102 26 94Z" fill="currentColor" stroke="#1B2347" stroke-width="4" stroke-linejoin="round"/><path d="M26 38Q26 8 52 8T80 38V94Q80 102 72 102H62Q56 102 56 96V84H50V96Q50 102 44 102H34Q26 102 26 94Z" fill="url(#shd)"/>
+    <path d="M26 76H80V94Q80 102 72 102H62Q56 102 56 96V84H50V96Q50 102 44 102H34Q26 102 26 94Z" fill="#000" opacity=".16"/><path d="M32 18Q40 11 52 11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".45"/>
+    <ellipse cx="62" cy="38" rx="22" ry="14" fill="url(#vz)" stroke="#1B2347" stroke-width="4"/>
+    <ellipse cx="69" cy="32" rx="10" ry="4" fill="#fff" opacity=".85"/><ellipse cx="54" cy="43" rx="4" ry="2" fill="#fff" opacity=".5"/>
+  </symbol>
+</svg>
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<nav>
+  <div class="wrap">
+    <b><svg><use href="#cm"/></svg>One of Us</b>
+    <ul><li><a href="#about">About</a></li><li><a href="#schedule">Schedule</a></li><li><a href="#roles">Roles</a></li></ul>
+    <a class="btn" id="jc" href="#register" style="padding:8px 18px;font-size:15px">Join the crew</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="tag">Free event · All crews welcome</span>
+      <h1>One of us is <em>sus.</em></h1>
+      <p>Among Us Night is a live, in-person game night where you play crewmates and impostors in teams of ten. Complete tasks, call meetings, and vote out the liar.</p>
+      <div class="facts">
+        <span><svg class="ic"><use href="#i-cal"/></svg><b>When</b> Friday, 30th October · 2 PM</span>
+        <span><svg class="ic"><use href="#i-pin"/></svg><b>Where</b> NTB</span>
+        <span><svg class="ic"><use href="#i-users"/></svg><b>Players</b> 100</span>
+      </div>
+      <div class="cta">
+        <a class="btn" id="bk" href="#register"><svg class="ic"><use href="#i-rocket"/></svg>BOOK A TICKET TO SPACE</a>
+        <a class="btn alt" id="vt" href="#schedule"><svg class="ic"><use href="#i-ticket"/></svg>VIEW TICKET</a>
+      </div>
+      <button class="btn alt" id="startCd" type="button" style="margin-top:26px"><svg class="ic"><use href="#i-clock"/></svg>START A COUNTDOWN</button>
+      <p id="cdBox" style="display:none;font-size:18px;margin:26px 0 0">Doors open in <b id="cd" style="color:var(--yellow)">…</b></p>
+    </div>
+    <div>
+      <div class="table">
+        <div class="disc"></div>
+        <div id="ring"></div>
+        
+        
+        
+        
+        <div class="pad"><button id="bigred" aria-label="Call an emergency meeting">PRESS</button></div>
+      </div>
+      <p class="hint">Go on. Press the button.</p>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <h2>How a round works</h2>
+    <p class="lede">You don’t need to know the video game. We explain everything at the start, and every round takes about fifteen minutes.</p>
+    <div class="grid3">
+      <div class="card"><svg class="ic"><use href="#i-task"/></svg><h3>Do your tasks</h3><p>Crewmates collect tokens hidden around the hall to fill the ship’s progress bar. Fill it and the crew wins.</p></div>
+      <div class="card"><svg class="ic"><use href="#i-search"/></svg><h3>Spot the impostor</h3><p>Two players per round secretly sabotage the ship. Watch who disappears, who lies, and who acts too calm.</p></div>
+      <div class="card"><svg class="ic"><use href="#i-mega"/></svg><h3>Hold the meeting</h3><p>Found something suspicious? Call a meeting, argue your case, and vote. The person with the most votes is ejected.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="schedule">
+  <div class="wrap">
+    <h2>The plan for the night</h2>
+    <p class="lede">Arrive by 2 PM so we can sort you into crews before round one.</p>
+    <ol class="sched">
+      <li style="--c:var(--blue)"><time>2:00 PM</time><h3>Boarding</h3><p>Check in, pick up your colored badge, and meet your crew.</p></li>
+      <li style="--c:var(--green)"><time>2:30 PM</time><h3>Briefing and practice round</h3><p>A short walkthrough of the rules, then a round where nothing counts.</p></li>
+      <li style="--c:var(--yellow)"><time>3:00 PM</time><h3>Main rounds</h3><p>Ten live rounds with new crews and new impostors each time.</p></li>
+      <li style="--c:var(--purple)"><time>4:30 PM</time><h3>Final showdown</h3><p>The best crew from each round plays one last game for the trophy.</p></li>
+      <li style="--c:var(--red)"><time>5:00 PM</time><h3>Debrief</h3><p>Impostors reveal what they did. Prizes, photos, and snacks.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="roles">
+  <div class="wrap">
+    <h2>Pick your role</h2>
+    <p class="lede">Roles are assigned at random, but tell us what you’d like and we’ll try. Tap a card to see what each one does.</p>
+    <div class="roles">
+      <div class="role" tabindex="0" role="button" style="--c:var(--blue)" data-t="Crewmate: finish tasks, stay alive, and trust no one too quickly."><svg><use href="#cm"/></svg><h3>Crewmate</h3><p>Do tasks and find the liar.</p></div>
+      <div class="role" tabindex="0" role="button" style="--c:var(--red)" data-t="Impostor: sabotage the ship, blend in, and never get caught near a body."><svg><use href="#cm"/></svg><h3>Impostor</h3><p>Lie, sabotage, survive.</p></div>
+      <div class="role" tabindex="0" role="button" style="--c:var(--green)" data-t="Engineer: you can slip through vents once per round to reach any task fast."><svg><use href="#cm"/></svg><h3>Engineer</h3><p>Fix things faster than anyone.</p></div>
+      <div class="role" tabindex="0" role="button" style="--c:var(--purple)" data-t="Detective: once per round, ask one player to show their task list."><svg><use href="#cm"/></svg><h3>Detective</h3><p>Ask the questions that matter.</p></div>
+    </div>
+    <p id="roleNote" aria-live="polite">Tap a role to read the details.</p>
+  </div>
+</section>
+
+<section id="register">
+  <div class="wrap reg">
+    <div>
+      <h2>Get your seat on the ship</h2>
+      <p class="lede" style="margin-bottom:20px">Registration is free. Seats are limited to 100 players, so sign up early. You’ll get a badge in your chosen color at check-in.</p>
+      <p class="ticket">Bring a friend and ask to be placed in the same crew. Phones stay in pockets during rounds.</p>
+    </div>
+    <div>
+      <form id="form" novalidate>
+        <label for="n">Your name</label>
+        <input id="n" type="text" autocomplete="name" placeholder="e.g. Riya Sharma">
+        <label for="e">Email</label>
+        <input id="e" type="email" autocomplete="email" placeholder="you@example.com">
+        <label for="s">Scholar number</label>
+        <input id="s" type="text" autocomplete="off" maxlength="20" placeholder="e.g. 2512345678">
+        <label for="r">Role you’d like</label>
+        <select id="r"><option>Surprise me</option><option>Crewmate</option><option>Impostor</option><option>Engineer</option><option>Detective</option></select>
+        <label id="cl">Crew color</label>
+        <div class="colors" role="radiogroup" aria-labelledby="cl">
+          <input type="radio" name="c" id="c1" value="red" checked><label for="c1" style="--c:var(--red)" title="Red"></label>
+          <input type="radio" name="c" id="c2" value="blue"><label for="c2" style="--c:var(--blue)" title="Blue"></label>
+          <input type="radio" name="c" id="c3" value="green"><label for="c3" style="--c:var(--green)" title="Green"></label>
+          <input type="radio" name="c" id="c4" value="yellow"><label for="c4" style="--c:var(--yellow)" title="Yellow"></label>
+          <input type="radio" name="c" id="c5" value="purple"><label for="c5" style="--c:var(--purple)" title="Purple"></label>
+          <input type="radio" name="c" id="c6" value="orange"><label for="c6" style="--c:#F38B2B" title="Orange"></label>
+          <input type="radio" name="c" id="c7" value="pink"><label for="c7" style="--c:#F5A6D0" title="Pink"></label>
+          <input type="radio" name="c" id="c8" value="cyan"><label for="c8" style="--c:#3EE0D0" title="Cyan"></label>
+          <input type="radio" name="c" id="c9" value="lime"><label for="c9" style="--c:#7BE04A" title="Lime"></label>
+          <input type="radio" name="c" id="c10" value="brown"><label for="c10" style="--c:#8A5A3C" title="Brown"></label>
+        </div>
+        <div class="err" id="err" role="alert"></div>
+        <button class="btn" type="submit"><svg class="ic"><use href="#i-rocket"/></svg>BOOK A TICKET TO SPACE</button>
+      </form>
+      <div class="done" id="done">
+        <svg id="doneCm"><use href="#cm"/></svg>
+        <h3 id="doneT"></h3>
+        <p>Your ticket is booked for Friday, 30th October at 2 PM.</p>
+        <p style="color:var(--muted)">Scholar number <b id="dsn"></b>. Check-in is at NTB.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">Among Us Night is a fan-made community event and is not affiliated with Innersloth. Event details are placeholders. Replace them with your own.</div></footer>
+
+<div id="warp"></div>
+<div id="pxw"><canvas id="pxc"></canvas></div>
+<div id="ticket" role="dialog" aria-modal="true" aria-label="Your ticket"><div class="pass"><button id="tx" type="button" aria-label="Close ticket">×</button><p class="ph"><svg class="ic"><use href="#i-rocket"/></svg> Boarding pass</p><h3>One of Us</h3><dl><div><dt>Passenger</dt><dd id="tn">Crewmate</dd></div><div><dt>Date</dt><dd>Friday, 30th October</dd></div><div><dt>Time</dt><dd>2 PM</dd></div><div><dt>Scholar no.</dt><dd id="tsn">—</dd></div><div><dt>Gate</dt><dd>NTB</dd></div></dl><div class="bar"></div><p class="fine">Admit one crewmate. 100 players. Trust no one.</p></div></div>
+<button id="mus" type="button">♪ Play music</button>
+<button id="syn" type="button" style="bottom:calc(74px + env(safe-area-inset-bottom,0px))">♪ 80s synth</button>
+<div id="meet" role="alertdialog" aria-live="assertive"><div><h2>Emergency meeting!</h2><p>Who is the impostor? Taking you to registration…</p></div></div>
+
+<script>
+// stars
+(function(){var c=document.getElementById('stars'),x=c.getContext('2d'),W,H,st=[],pl=[],sh=[],mv=!matchMedia('(prefers-reduced-motion:reduce)').matches,mx=0,my=0;
+function rs(){W=c.width=innerWidth;H=c.height=innerHeight}rs();addEventListener('resize',rs);
+for(var i=0;i<230;i++)st.push({x:Math.random(),y:Math.random(),z:.2+Math.random()*.8,p:Math.random()*6});
+[['#67C9F5',70],['#B8A5F5',46],['#F45858',30],['#FFD166',22]].forEach(function(p,i){pl.push({x:Math.random(),y:.15+Math.random()*.7,r:p[1],c:p[0],s:.00002+i*.000008,o:i})});
+addEventListener('mousemove',function(e){mx=e.clientX/W-.5;my=e.clientY/H-.5});
+function f(t){
+ x.globalAlpha=1;var g=x.createRadialGradient(W*(.7+Math.sin(t/9000)*.1),H*.1,0,W*.7,H*.1,W*.9);g.addColorStop(0,'#26307a');g.addColorStop(.5,'#141a45');g.addColorStop(1,'#0a0e26');x.fillStyle=g;x.fillRect(0,0,W,H);
+ [[.2,.7,'#B8A5F5'],[.8,.5,'#F45858'],[.5,.2,'#67C9F5']].forEach(function(n,i){var nx=W*(n[0]+Math.sin(t/7000+i*2)*.05),ny=H*(n[1]+Math.cos(t/8000+i)*.05),ng=x.createRadialGradient(nx,ny,0,nx,ny,W*.3);ng.addColorStop(0,n[2]);ng.addColorStop(1,'transparent');x.globalAlpha=.14;x.fillStyle=ng;x.fillRect(0,0,W,H)});
+ st.forEach(function(s){var px=(((s.x-(mv?t*.00004*s.z:0))%1)+1)%1*W-mx*30*s.z,py=s.y*H-my*30*s.z;x.globalAlpha=.4+.6*Math.abs(Math.sin(t/900+s.p));x.fillStyle='#fff';x.beginPath();x.arc(px,py,s.z*1.6,0,7);x.fill()});
+ pl.forEach(function(p){var px=(((p.x-(mv?t*p.s:0))%1)+1)%1*(W+300)-150-mx*50*(p.r/70),py=p.y*H+Math.sin(t/4000+p.o)*10,gr=x.createRadialGradient(px-p.r*.3,py-p.r*.3,p.r*.1,px,py,p.r);gr.addColorStop(0,p.c);gr.addColorStop(1,'#0a0e26');x.globalAlpha=.85;x.fillStyle=gr;x.beginPath();x.arc(px,py,p.r,0,7);x.fill();if(p.o===0){x.strokeStyle='rgba(255,229,209,.5)';x.lineWidth=5;x.beginPath();x.ellipse(px,py,p.r*1.7,p.r*.4,-.4,0,7);x.stroke()}});
+ if(mv&&Math.random()<.004)sh.push({x:Math.random()*W,y:Math.random()*H*.5,l:0});
+ sh=sh.filter(function(s){s.l++;var a=1-s.l/45;if(a<=0)return false;var hx=s.x-s.l*14,hy=s.y+s.l*6;x.globalAlpha=a;x.strokeStyle='#fff';x.lineWidth=2;x.beginPath();x.moveTo(hx,hy);x.lineTo(hx+60,hy-26);x.stroke();return true});
+ if(mv)requestAnimationFrame(f)}
+requestAnimationFrame(f);
+})();
+(function(){var cs=['#F45858','#67C9F5','#8DD982','#FFD166','#B8A5F5','#F38B2B','#F5A6D0','#3EE0D0','#7BE04A','#8A5A3C'],h='';cs.forEach(function(c,i){var a=-Math.PI/2+i*Math.PI/5;h+='<div class="seat" style="left:'+(50+41*Math.cos(a)-8)+'%;top:'+(50+41*Math.sin(a)-9.6)+'%;color:'+c+';animation-delay:-'+(i*.4)+'s"><svg viewBox="0 0 100 120"><use href="#cm"/></svg></div>'});document.getElementById('ring').innerHTML=h})();
+
+// countdown to event (Sat Nov 14 2026, 6 PM local)
+var target=new Date(2026,9,30,14,0,0);
+function tick(){var d=target-new Date(),el=document.getElementById('cd');
+  if(d<=0){el.textContent='now. Come aboard!';return}
+  var D=Math.floor(d/864e5),H=Math.floor(d/36e5)%24,M=Math.floor(d/6e4)%60,S=Math.floor(d/1e3)%60;
+  el.textContent=D+' days, '+H+' hours, '+M+' min, '+S+' sec'}
+document.getElementById('startCd').addEventListener('click',function(){this.style.display='none';document.getElementById('cdBox').style.display='block';tick();setInterval(tick,1000)});
+
+// ambient backrooms-style music (generated in the browser)
+var ac,mg,playing=false;
+document.getElementById('mus').addEventListener('click',function(){
+  if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();mg=ac.createGain();mg.gain.value=0;
+    var lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=900;lp.connect(mg);mg.connect(ac.destination);
+    [[60,'sawtooth',.18],[120.5,'square',.05],[180,'sine',.08],[59.3,'sawtooth',.14]].forEach(function(o){var s=ac.createOscillator(),g=ac.createGain();s.type=o[1];s.frequency.value=o[0];g.gain.value=o[2];s.connect(g);g.connect(lp);s.start()});
+    var l=ac.createOscillator(),lg=ac.createGain();l.frequency.value=.15;lg.gain.value=300;l.connect(lg);lg.connect(lp.frequency);l.start();
+    var notes=[220,261.6,196,233.1],i=0;
+    setInterval(function(){if(!playing)return;var s=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime;s.type='triangle';s.frequency.value=notes[i++%4]/2;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.12,t+1.5);g.gain.linearRampToValueAtTime(0,t+4);s.connect(g);g.connect(ac.destination);s.start();s.stop(t+4.2)},4000);
+  }
+  playing=!playing;ac.resume();mg.gain.linearRampToValueAtTime(playing?.35:0,ac.currentTime+1);
+  this.textContent=playing?'♪ Pause music':'♪ Play music';
+});
+
+// blur transition + ticket
+function warp(cb){var w=document.getElementById('warp');w.classList.remove('on');void w.offsetWidth;w.classList.add('on');setTimeout(cb,500);setTimeout(function(){w.classList.remove('on')},1250)}
+function pixelWarp(cb){
+  var w=document.getElementById('pxw'),c=document.getElementById('pxc');
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){cb();return}
+  var W=c.width=innerWidth,H=c.height=innerHeight,s=Math.max(40,Math.round(W/22)),cols=Math.ceil(W/s),rows=Math.ceil(H/s),cells=[],pal=['#F45858','#1B2347','#B8A5F5','#FFD166','#67C9F5','#8DD982'],x=c.getContext('2d'),t0=null,fired=false,D=1300;
+  for(var i=0;i<cols*rows;i++)cells.push({r:Math.random(),c:pal[Math.floor(Math.random()*6)]});
+  w.classList.remove('on');void w.offsetWidth;w.classList.add('on');
+  function f(t){
+    if(t0===null)t0=t;var p=(t-t0)/D;x.clearRect(0,0,W,H);
+    if(p>=1){w.classList.remove('on');return}
+    if(p>.48&&!fired){fired=true;cb()}
+    cells.forEach(function(q,i){
+      var show=p<.45?q.r<p/.45:p<.55?true:q.r>(p-.55)/.45;
+      if(show){x.fillStyle=q.c;x.fillRect((i%cols)*s,Math.floor(i/cols)*s,s+1,s+1)}
+    });
+    requestAnimationFrame(f)
+  }
+  requestAnimationFrame(f)
+}
+var tk=document.getElementById('ticket');
+document.getElementById('bk').addEventListener('click',function(e){e.preventDefault();pixelWarp(function(){document.getElementById('register').scrollIntoView({behavior:'instant'})})});
+document.getElementById('jc').addEventListener('click',function(e){e.preventDefault();pixelWarp(function(){document.getElementById('register').scrollIntoView({behavior:'instant'})})});
+document.getElementById('vt').addEventListener('click',function(e){e.preventDefault();warp(function(){tk.classList.add('show');document.getElementById('tx').focus()})});
+document.getElementById('tx').addEventListener('click',function(){tk.classList.remove('show')});
+tk.addEventListener('click',function(e){if(e.target===tk)tk.classList.remove('show')});
+addEventListener('keydown',function(e){if(e.key==='Escape')tk.classList.remove('show')});
+
+// original 80s-style synth arpeggio (generated in the browser)
+var a2,syn=false,sg,step=0,ch=[[110,130.81,164.81,220,164.81,130.81,164.81,220],[87.31,110,130.81,174.61,130.81,110,130.81,174.61],[130.81,164.81,196,261.63,196,164.81,196,261.63],[98,123.47,146.83,196,146.83,123.47,146.83,196]];
+document.getElementById('syn').addEventListener('click',function(){
+  if(!a2){a2=new (window.AudioContext||window.webkitAudioContext)();sg=a2.createGain();sg.gain.value=.25;var lp=a2.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1800;lp.connect(sg);sg.connect(a2.destination);
+    setInterval(function(){if(!syn)return;var t=a2.currentTime,c=ch[Math.floor(step/8)%4],f=c[step%8];
+      [f*2,f*2.01].forEach(function(fr){var o=a2.createOscillator(),g=a2.createGain();o.type='sawtooth';o.frequency.value=fr;g.gain.setValueAtTime(.001,t);g.gain.exponentialRampToValueAtTime(.18,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+.24);o.connect(g);g.connect(lp);o.start(t);o.stop(t+.26)});
+      if(step%8===0){var b=a2.createOscillator(),bg=a2.createGain();b.type='sine';b.frequency.value=c[0]/2;bg.gain.setValueAtTime(.001,t);bg.gain.exponentialRampToValueAtTime(.5,t+.05);bg.gain.exponentialRampToValueAtTime(.001,t+1.9);b.connect(bg);bg.connect(lp);b.start(t);b.stop(t+2)}
+      step++},250)}
+  syn=!syn;a2.resume();this.textContent=syn?'♪ Stop synth':'♪ 80s synth';
+});
+
+// emergency button
+var big=document.getElementById('bigred'),meet=document.getElementById('meet');
+big.addEventListener('click',function(){
+  big.classList.add('hit');document.body.classList.add('shake');meet.classList.add('show');
+  setTimeout(function(){document.body.classList.remove('shake')},500);
+  setTimeout(function(){meet.classList.remove('show');big.classList.remove('hit');document.getElementById('register').scrollIntoView();document.getElementById('n').focus({preventScroll:true})},1800);
+});
+
+// roles
+var note=document.getElementById('roleNote');
+document.querySelectorAll('.role').forEach(function(r){
+  function pick(){document.querySelectorAll('.role').forEach(function(x){x.classList.remove('on')});r.classList.add('on');note.textContent=r.dataset.t}
+  r.addEventListener('click',pick);
+  r.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();pick()}});
+});
+
+// registration
+var colorVar={red:'var(--red)',blue:'var(--blue)',green:'var(--green)',yellow:'var(--yellow)',purple:'var(--purple)',orange:'#F38B2B',pink:'#F5A6D0',cyan:'#3EE0D0',lime:'#7BE04A',brown:'#8A5A3C'};
+document.getElementById('form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var n=document.getElementById('n').value.trim(),m=document.getElementById('e').value.trim(),err=document.getElementById('err');
+  if(!n){err.textContent='Enter your name so we can print your badge.';return}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(m)){err.textContent='Enter a valid email address, like you@example.com.';return}
+  var sn=document.getElementById('s').value.trim();
+  if(!/^[A-Za-z0-9\/-]{4,20}$/.test(sn)){err.textContent='Enter your scholar number (4 to 20 letters or digits).';return}
+  err.textContent='';
+  var c=document.querySelector('input[name=c]:checked').value,f=this,d=document.getElementById('done');
+  d.style.setProperty('--c',colorVar[c]);d.style.color=colorVar[c];
+  document.getElementById('doneT').textContent='You’re aboard, '+n+'.';
+  d.querySelector('p').style.color='var(--text)';
+  pixelWarp(function(){f.style.display='none';d.style.display='block'});document.getElementById('tn').textContent=n;document.getElementById('tsn').textContent=sn;document.getElementById('dsn').textContent=sn;
+  setTimeout(function(){document.getElementById('doneCm').classList.add('ejected')},600);
+  setTimeout(function(){var s=document.getElementById('doneCm');s.classList.remove('ejected');s.style.opacity=1},2300);
+});
+</script>
+</body>
+</html>
